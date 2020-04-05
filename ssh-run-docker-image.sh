@@ -1,0 +1,1 @@
+docker run --gpus all -it --shm-size 16G --privileged -p 8888:8888 -p 5900:5900 -p 6006:6006 -p 8265:8265 -v /mnt/vol/sharespace:/root/sharespace --rm $1
