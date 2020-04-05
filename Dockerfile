@@ -79,18 +79,20 @@ RUN pip install optuna
 
 EXPOSE 8265
 
+# PWD 0123
 RUN echo 'Xvfb :0 -screen 0 1400x900x24 & ' >> /root/Xvfb-run.sh && \
-    echo 'x11vnc -display :0 -passwd pass -forever &' >> /root/run-Xvfb.sh && \
+    echo 'x11vnc -display :0 -passwd 0123 -forever &' >> /root/run-Xvfb.sh && \
     chmod +x /root/run-Xvfb.sh
 
+# PWD 0123
 RUN echo 'DISPLAY=:0 jupyter notebook --allow-root --ip=0.0.0.0 --port 8888 --notebook-dir=/root --NotebookApp.password="sha1:71247b1fba50:6334281a44d2134e85492be9ad7426a3cf9caf90" &' >> /root/run-jupyter.sh && \
     chmod +x /root/run-jupyter.sh
 
 # auto start tmux and Xvfb, Jupyter
 ENTRYPOINT tmux new \; \
             send-keys 'Xvfb :0 -screen 0 1400x900x24 & ' Enter \; \
-	    send-keys 'x11vnc -display :0 -passwd 0123 -forever &' Enter \; \
-            split-window -v  \; \
+    	    send-keys 'x11vnc -display :0 -passwd 0123 -forever &' Enter \; \
+        split-window -v  \; \
             send-keys "jupyter nbextension enable --py widgetsnbextension --sys-prefix" Enter \; \
             send-keys "bash /root/run-jupyter.sh" Enter \; \
 	   new-window \; \
